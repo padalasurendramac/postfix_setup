@@ -1,0 +1,95 @@
+
+root@vanna:/etc/postfix# cat main.cf
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+
+# Debian specific:  Specifying a file name will cause the first
+# line of that file to be used as the name.  The Debian default
+# is /etc/mailname.
+#myorigin = /etc/mailname
+
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = yes
+
+# Uncomment the next line to generate "delayed mail" warnings
+#delay_warning_time = 4h
+
+readme_directory = no
+
+# See http://www.postfix.org/COMPATIBILITY_README.html -- default to 3.6 on
+# fresh installs.
+compatibility_level = 3.6
+
+
+
+# TLS parameters
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_security_level=may
+
+smtp_tls_CApath=/etc/ssl/certs
+smtp_tls_security_level=may
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+myhostname = example.com
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+mydestination = ip-172-31-84-112.ec2.internal, ip-172-31-84-112.ec2.internal, localhost.ec2.internal, localhost, localhost.localdomain
+#mydestination = localhost, localhost.localdomain
+
+relayhost = [email-smtp.us-east-1.amazonaws.com]:587
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = all
+
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_auth_enable = yes
+smtp_sasl_security_options = noanonymous
+myorigin = /etc/mailname
+smtp_generic_maps = hash:/etc/postfix/generic
+root@vanna:/etc/postfix#
+
+
+
+root@vanna:/etc/postfix# cat /etc/aliases
+# See man 5 aliases for format
+postmaster:    root
+root: surendra.padala@gmail.com
+root@vanna:/etc/postfix# cat sasl_passwd
+[email-smtp.us-east-1.amazonaws.com]:587 AK*************7Z:B**************************b
+root@vanna:/etc/postfix# cat generic
+test@gmail.com surendra.padala@gmail.com
+root@vanna:/etc/postfix# ls -rlth
+total 156K
+-rwxr-xr-x 1 root root  11K Jan 16 15:11 postfix-script
+-rw-r--r-- 1 root root  11K Jan 16 15:11 postfix-files
+-rwxr-xr-x 1 root root  30K Jan 16 15:11 post-install
+-rw-r--r-- 1 root root   60 Jan 23 14:12 dynamicmaps.cf
+-rw-r--r-- 1 root root 6.4K Jan 23 14:12 master.cf
+lrwxrwxrwx 1 root root   31 Jan 23 14:12 makedefs.out -> /usr/share/postfix/makedefs.out
+drwxr-xr-x 2 root root 4.0K Jan 29 08:02 sasl
+drwxr-xr-x 2 root root 4.0K Jan 29 08:02 postfix-files.d
+drwxr-xr-x 2 root root 4.0K Jan 29 08:02 dynamicmaps.cf.d
+-rw-r--r-- 1 root root 1.4K Feb  6 08:22 main.cf_backup
+-rw-r--r-- 1 root root 6.4K Feb  6 18:12 master.cf.proto
+-rw-r--r-- 1 root root  27K Feb  6 18:12 main.cf.proto
+-rw------- 1 root root  107 Feb 19 15:33 sasl_passwd
+-rw------- 1 root root  12K Feb 19 15:37 sasl_passwd.db
+-rw-r--r-- 1 root root 1.7K Feb 19 16:01 main.cf_lt
+-rw-r--r-- 1 root root 1.7K Feb 20 08:39 main.cf
+-rw-r--r-- 1 root root  12K Feb 20 08:55 generic.db
+-rw-r--r-- 1 root root   58 Feb 20 15:04 generic
+root@vanna:/etc/postfix# pwd
+/etc/postfix
+root@vanna:/etc/postfix#
+
+echo "test" | mail -s "test" -a "From: surendra.padala@gmail.com" surendra.padala@gmail.com
+
+echo "test" | mail -s "test"   test@gmail.com
