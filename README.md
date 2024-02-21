@@ -1,6 +1,19 @@
 # postfix_setup
 postfix_setup and integrations with nagios notification alerts
 
+pre requirement aws ses or gmail ses account 
+
+## aws 
+create smtp user at aws ses service 
+
+save access and secret key 
+
+and note the smtp server details from aws ses service 
+
+
+
+
+
 ## os ubuntu
 
 ### install the below packages mailx and postfix
@@ -106,6 +119,10 @@ echo "test" | mail -s "test"   test@gmail.com
 
 
  
+#### after completed testing 
+
+## integration with Nagios 
+
 
  
  
