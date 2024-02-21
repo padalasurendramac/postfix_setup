@@ -6,7 +6,7 @@ postfix_setup and integrations with nagios notification alerts
 ### install the below packages mailx and postfix
  sudo apt install mailutils postfix
 
- popups > choose > internet > reset all in default and click ok
+ popups > choose > internet > rest all in default and click ok
 
 ## note for re configure postfix configure use this below command 
 sudo dpkg-reconfigure postfix
