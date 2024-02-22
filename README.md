@@ -3,7 +3,9 @@
 postfix_setup and integrations with nagios notification alerts
 
 pre requirement aws ses or gmail ses account and dns name to be set 
-command example
+
+command example:-
+
 hostname test.com
 
 ## aws 
