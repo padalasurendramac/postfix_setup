@@ -3,8 +3,8 @@
 postfix_setup and integrations with nagios notification alerts
 
 pre requirement aws ses or gmail ses account and dns name to be set 
-
-hostname set test.com
+command example
+hostname test.com
 
 ## aws 
 create smtp user at aws ses service 
